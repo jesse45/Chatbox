@@ -1,25 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
+import HomePage from './HomePage/HomePage';
+import { Switch, Route } from 'react-router-dom'
 import './App.css';
+import Login from './Login/Login';
+import SignUp from './containers/Auth/SignUp';
+import Logout from './containers/Auth/Logout';
+import Testing from '../src/Testing';
+import { AuthProvider } from './containers/Auth/Auth';
+import PrivateRoute from './PrivateRoute/PrivateRoute';
+import AuthService from './services/auth_service';
 
 function App() {
+
+
+  useEffect(() => {
+    const initConnectyCube = async () => {
+      await AuthService.init();
+
+    }
+
+    initConnectyCube();
+
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <div className="App">
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/signup" component={SignUp} />
+          <Route path="/login" component={Login} />
+          <Route path="/signout" component={Logout} />
+          <PrivateRoute path="/testing" component={Testing} />
+        </Switch>
+      </div>
+    </AuthProvider>
+
   );
 }
 
