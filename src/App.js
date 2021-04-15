@@ -1,40 +1,59 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import HomePage from './HomePage/HomePage';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import './App.css';
-import Login from './Login/Login';
-import SignUp from './containers/Auth/SignUp';
-import Logout from './containers/Auth/Logout';
+import Login from './containers/Auth/login';
+import SignUp from './containers/Auth/signup';
 import Testing from '../src/Testing';
-import { AuthProvider } from './containers/Auth/Auth';
-import PrivateRoute from './PrivateRoute/PrivateRoute';
+import { AuthProvider } from './containers/Auth/auth';
+import PrivateRoute from './routes/PrivateRoute/PrivateRoute';
 import AuthService from './services/auth_service';
+import { Provider } from 'react-redux';
+import store from './store/store';
+import { CONFIG, CREDENTIALS } from './appConfig';
 
 function App() {
 
 
-  useEffect(() => {
-    const initConnectyCube = async () => {
-      await AuthService.init();
+  const initConnectyCube = async () => {
+    // await AuthService.init();
 
+    //check for session token
+    let token = sessionStorage.getItem("Token");
+    if (!token) {
+      await init();
+    }
+    else {
+      //
     }
 
-    initConnectyCube();
+  }
 
-  }, [])
+
+  const init = async () => {
+    await ConnectyCube.init(CREDENTIALS, CONFIG);
+    // this.CreateSession();
+  }
+
+  initConnectyCube();
+
 
   return (
-    <AuthProvider>
-      <div className="App">
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/signup" component={SignUp} />
-          <Route path="/login" component={Login} />
-          <Route path="/signout" component={Logout} />
-          <PrivateRoute path="/testing" component={Testing} />
-        </Switch>
-      </div>
-    </AuthProvider>
+    <BrowserRouter>
+      <Provider store={store}>
+        <AuthProvider>
+          <div className="App">
+            <Switch>
+              <Route exact path="/" component={HomePage} />
+              <Route path="/signup" component={SignUp} />
+              <Route path="/login" component={Login} />
+              <PrivateRoute path="/testing" component={Testing} />
+            </Switch>
+          </div>
+        </AuthProvider>
+      </Provider>
+    </BrowserRouter>
+
 
   );
 }

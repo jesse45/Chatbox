@@ -1,8 +1,11 @@
 import app from '../../base';
+import UserService from '../../services/user_service';
+// const UserService = require('../../services/user_service');
 
 const SIGNUP_USER = 'SIGNUP_USER';
 const SIGNOUT_USER = 'SIGNOUT_USER';
 const SIGNIN_USER = 'SIGNIN_USER';
+const GET_ID = 'GET_ID';
 
 export const signUp = (data) => {
     return {
@@ -25,20 +28,31 @@ export const signIn = (data) => {
     }
 }
 
+export const getID = () => {
+    return {
+        type: GET_ID
+    }
+}
+
 export const signupUser = (userData) => {
     return async (dispatch) => {
         app.auth().createUserWithEmailAndPassword(userData.email, userData.password)
             .then(async function (data) {
                 console.log(data);
                 dispatch(signUp(data))
+
             })
             .catch(function (error) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
 
-                console.log(errorMessage);
+                // console.log(errorMessage);
                 // ...
+                console.error(error)
+
+                UserService.deletUser();
+
             })
     }
 }
@@ -91,6 +105,17 @@ export const checkUserState = () => {
             }
         })
     }
+}
+
+export const getIdToken = () => {
+
+    app.auth().currentUser.getIdToken()
+        .then((idToken) => {
+            console.log(idToken);
+        }).catch(() => {
+            //handle error
+        })
+
 }
 
 // dsada26

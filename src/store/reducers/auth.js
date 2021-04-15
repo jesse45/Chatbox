@@ -1,9 +1,6 @@
 
-const initialState = {
-    auth: null
-}
 
-const reducer = (state = initialState, action) => {
+const authReducer = (state = null, action) => {
     switch (action.type) {
         case 'SIGNUP_USER':
             return {
@@ -28,4 +25,4 @@ const reducer = (state = initialState, action) => {
 }
 
 
-export default reducer;
+export default authReducer;

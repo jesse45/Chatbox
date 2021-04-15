@@ -3,7 +3,7 @@ const initialState = {
     email: ''
 }
 
-const reducer = (state = initialState, action) => {
+const loginReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SUBMIT':
             return {
@@ -15,4 +15,4 @@ const reducer = (state = initialState, action) => {
     }
 }
 
-export default reducer;
+export default loginReducer;

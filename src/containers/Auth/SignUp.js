@@ -4,7 +4,9 @@ import * as EmailValidator from 'email-validator';
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { signupUser } from '../../store/actions/auth';
+import AuthService from '../../services/auth_service';
 import classes from './SignUp.module.css';
+
 
 
 
@@ -14,13 +16,51 @@ function SignUp() {
     const dispatch = useDispatch();
     const { register, handleSubmit, errors } = useForm();
 
+
     const handleOnSubmit = (data) => {
+        // console.log(data);
+        // const firebasePromise = new Promise((resolve, reject) => {
+        //     let resolveDispatch = null;
+        //     try {
+        //         resolveDispatch = a;
 
-        console.log(data);
-        dispatch(signupUser(data));
-        history.push("/testing")
+        //     }
+        //     catch (error) {
+        //         reject(error)
+        //     }
+        //     resolve(resolveDispatch);
+        // })
 
+
+
+        // const connectycubePromise = new Promise((resolve, reject) => {
+        // try {
+        AuthService.signUp(data)
+            .then(() => {
+                history.push("/testing")
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+        // }
+        // catch (error) {
+        //     reject(error)
+        // }
+        // resolve('')
+        // })
+
+        // Promise.all([firebasePromise, connectycubePromise])
+        //     .then(() => {
+        //         history.push("/testing")
+        //     })
+        //     .catch(error => {
+        //         throw (error)
+        //     })
     }
+
+
+
 
     return (
         <div className={classes.Auth}>
@@ -32,25 +72,25 @@ function SignUp() {
                             <input
                                 className={classes.InputElement}
                                 type='text'
-                                name="firstname"
-                                placeholder="FirstName"
+                                name="full_name"
+                                placeholder="Fullname"
                                 ref={register({ required: true })}
                             />
                         </div>
-                        <div>
+                        {/* <div>
                             <input
                                 className={classes.InputElement}
                                 type='text'
                                 name="lastname"
                                 placeholder="LastName"
-                                ref={register({ required: true })}
+                                ref={register({ required: false })}
                             />
-                        </div>
+                        </div> */}
                         <div>
                             <input
                                 className={classes.InputElement}
                                 type='text'
-                                name="username"
+                                name="login"
                                 placeholder="Username"
                                 ref={register({ required: true })}
                             />
@@ -79,6 +119,24 @@ function SignUp() {
                                 ref={register({ required: true, minLength: 6 })}
                             />
                         </div>
+                        <div>
+                            <input
+                                className={classes.InputElement}
+                                type='text'
+                                name="website"
+                                placeholder="Website"
+                                ref={register({ required: false })}
+                            />
+                        </div>
+                        <div>
+                            <input
+                                className={classes.InputElement}
+                                type='number'
+                                name="phone"
+                                placeholder="Phone Number"
+                                ref={register({ required: false, minLength: 10 })}
+                            />
+                        </div>
                         <button type="submit">Sign up</button>
                     </form>
 
@@ -86,6 +144,7 @@ function SignUp() {
                 <div>
                     <p>{errors.email && "Your input needs an email"}</p>
                     <p>{errors.password && "Your input requried to be more than 6"}</p>
+                    <p>{errors.phone_number && "Invalid Phone number"}</p>
                 </div>
             </section>
 

@@ -1,14 +1,14 @@
 import React, { useContext } from 'react'
 import { Route, Redirect } from 'react-router-dom';
-import { AuthContext } from '../containers/Auth/Auth';
+import { AuthContext } from '../../containers/Auth/auth';
 import { useSelector } from 'react-redux';
 
 const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
     const currentUser = useContext(AuthContext);
     const auth = useSelector(state => state.auth)
-    console.log(RouteComponent)
-    console.log(rest)
-    console.log(currentUser)
+    // console.log(RouteComponent)
+    // console.log(rest)
+    // console.log(currentUser)
     return (
         <Route
             {...rest}
@@ -16,8 +16,8 @@ const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
                 currentUser ? (
                     <RouteComponent {...routeProps} />
                 ) : (
-                        <Redirect exact to="/" />
-                    )
+                    <Redirect exact to="/" />
+                )
             }
         />
     );

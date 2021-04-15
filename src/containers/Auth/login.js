@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Redirect } from 'react-router-dom';
-import { signinUser } from '../store/actions/auth';
-import { AuthContext } from '../containers/Auth/Auth';
+import { signinUser } from '../../store/actions/auth';
+import { AuthContext } from './auth';
 // import classes from './Login.module.css';
 
 function Login() {
