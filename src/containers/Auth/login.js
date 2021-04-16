@@ -3,14 +3,14 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Redirect } from 'react-router-dom';
 import { signinUser } from '../../store/actions/auth';
-import { AuthContext } from './auth';
+// import { AuthContext } from './auth';
 // import classes from './Login.module.css';
 
 function Login() {
     const history = useHistory();
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth)
-    const currentUser = useContext(AuthContext);
+    // const currentUser = useContext(AuthContext);
     const { register, handleSubmit, errors } = useForm();
 
     const clickHandler = () => {
@@ -23,9 +23,9 @@ function Login() {
         dispatch(signinUser(data));
         history.push('/testing')
 
-        if (currentUser) {
-            return <Redirect to='/testing' />
-        }
+        // if (currentUser) {
+        //     return <Redirect to='/testing' />
+        // }
     }
 
 

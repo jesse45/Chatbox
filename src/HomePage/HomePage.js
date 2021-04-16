@@ -22,8 +22,8 @@ function HomePage() {
                 </div>
                 <ul className={classes.Nav__links}>
                     <li><NavLink to="/">HomePage</NavLink></li>
-                    <li><NavLink to="/login">Login</NavLink></li>
-                    <li><NavLink to="/signup">Sign Up</NavLink></li>
+                    <li><NavLink to="/auth/login">Login</NavLink></li>
+                    <li><NavLink to="/auth/signup">Sign Up</NavLink></li>
                 </ul>
 
             </nav>

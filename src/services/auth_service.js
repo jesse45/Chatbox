@@ -1,8 +1,10 @@
 
+import axios from 'axios';
 import ConnectyCube from 'connectycube/dist/connectycube.min.js';
 import { CONFIG, CREDENTIALS } from '../appConfig';
 import { signoutUser, signupUser } from '../store/actions/auth';
 import { setCurrentUser } from '../store/actions/currentuser';
+import User from '../models/user_model';
 import store from '../store/store';
 
 
@@ -37,46 +39,64 @@ class AuthService {
 
     }
 
-    async signUp(userProfile) {
-        await this.CreateSession();
-        await ConnectyCube.users
-            .signup(userProfile)
-            .then(async (user) => {
-                console.log(user);
-                await store.dispatch(signupUser({ email: userProfile.email, password: userProfile.password }));
+    async signUp(userCredentials) {
+        // await this.CreateSession();
+        // await ConnectyCube.users
+        //     .signup(userProfile)
+        //     .then(async (user) => {
+        //         console.log(user);
+        //         await store.dispatch(signupUser({ email: userProfile.email, password: userProfile.password }));
 
-                this.signIn({ email: userProfile.email, password: userProfile.password })
+        //         this.signIn({ email: userProfile.email, password: userProfile.password })
+
+        //     })
+        //     .catch((error) => { console.log(error) });
+
+
+        //check for app token
+        //TODO check if token has expired
+        let appToken = sessionStorage.getItem("AppSession")
+        let appTokenJson = JSON.parse(appToken);
+        let token = appTokenJson.token;
+        console.log(token)
+        let userForm = new User(userCredentials);
+
+
+        let userParams = {
+            email: "john@mail.com",
+            password: "ksasfk1",
+            phoneNumber: '+11234567890',
+            displayName: "john wick"
+        }
+        console.log(JSON.stringify(userParams))
+
+        fetch("http://localhost:8080/auth/signup", {
+            method: 'POST',
+            body: JSON.stringify(userForm),
+            headers: {
+                'Content-Type': 'application/json',
+                'CB-Token': token
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw Error(`Error message: ${response.statusText}`)
+                }
+                console.log(response)
+                return response.text()
+            })
+            .then(json => {
+                console.log(json);
 
             })
-            .catch((error) => { console.log(error) });
-
-        // const userParams = {
-        //     email: "john@mail.com",
-        //     password: "ksasfk1",
-        //     phoneNumber: '+11234567890',
-        //     displayName: "john wick"
-        // }
-
-        // fetch("http://localhost:8080/auth/verify", {
-        //     method: 'POST',
-        //     body: JSON.stringify(userParams),
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // })
-        //     .then(response => response.json())
-        //     .then(json => console.log(json))
+            .catch(error => console.log(error))
 
     }
 
     async signIn(userCredentials) {
-        // await ConnectyCube.login(userCredentials)
-        //     .then((user) => {
-        //         console.log(user);
-        //         store.dispatch(setCurrentUser(user))
-        //         this.setUserSession(user);
-        //     })
-        //     .catch((error) => { console.log(error) });
+
+
+
     }
 
     async logout() {

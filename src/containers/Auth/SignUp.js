@@ -36,12 +36,12 @@ function SignUp() {
         // const connectycubePromise = new Promise((resolve, reject) => {
         // try {
         AuthService.signUp(data)
-            .then(() => {
-                history.push("/testing")
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+        // .then(() => {
+        //     history.push("/testing")
+        // })
+        // .catch((error) => {
+        //     console.log(error)
+        // })
 
         // }
         // catch (error) {

@@ -1,4 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { Switch, Route, useRouteMatch } from 'react-router';
+import SignUp from './signup';
+import Login from './login';
 import app from '../../base';
 
 // export const AuthContext = createContext();
@@ -33,24 +36,43 @@ import app from '../../base';
 //     );
 // };
 
-  //export const AuthProvider = ({ chlidren }) => {
+//export const AuthProvider = ({ chlidren }) => {
 
-    //     const [currentUser, setCurrentUser] = useState(null);
+//     const [currentUser, setCurrentUser] = useState(null);
 
-    //     useEffect(() => {
-    //         app.auth().onAuthStateChanged(setCurrentUser)
-    //         // return () => {
-    //         //     cleanup
-    //         // }
-    //     }, [])
+//     useEffect(() => {
+//         app.auth().onAuthStateChanged(setCurrentUser)
+//         // return () => {
+//         //     cleanup
+//         // }
+//     }, [])
 
 
-    //     return (
-    //         <AuthContext.Provider
-    //             value={{ currentUser }}
-    //         >
-    //             {children}
+//     return (
+//         <AuthContext.Provider
+//             value={{ currentUser }}
+//         >
+//             {children}
 
-    //         </AuthContext.Provider>
-    //     )
-    // }
+//         </AuthContext.Provider>
+//     )
+// }
+
+
+function Auth() {
+
+    let { path, url } = useRouteMatch();
+
+    return (
+        <>
+            <Switch>
+                <Route path={`${path}/signup`} component={SignUp} />
+                <Route path={`${path}/login`} component={Login} />
+            </Switch>
+
+
+        </>
+    )
+}
+
+export default Auth
