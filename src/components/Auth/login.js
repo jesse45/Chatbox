@@ -1,15 +1,15 @@
-import React, { useContext } from 'react';
+import React, { } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { signinUser } from '../../store/actions/auth';
 // import { AuthContext } from './auth';
-// import classes from './Login.module.css';
+import AuthService from '../../services/auth_service';
 
 function Login() {
     const history = useHistory();
     const dispatch = useDispatch();
-    const auth = useSelector(state => state.auth)
+
     // const currentUser = useContext(AuthContext);
     const { register, handleSubmit, errors } = useForm();
 
@@ -20,8 +20,10 @@ function Login() {
     const handleOnSubmit = (data) => {
 
         console.log(data);
-        dispatch(signinUser(data));
-        history.push('/testing')
+
+        AuthService.signIn({ login: data.login, password: data.password })
+        // dispatch(signinUser(data));
+        // history.push('/testing')
 
         // if (currentUser) {
         //     return <Redirect to='/testing' />
@@ -36,9 +38,9 @@ function Login() {
                     <p>ChatBox</p>
                     <div>
                         <input
-                            type='email'
-                            name='email'
-                            placeholder="Enter your email"
+                            type='text'
+                            name='login'
+                            placeholder="Enter your login"
                             ref={register({ required: true })}
                         />
                     </div>

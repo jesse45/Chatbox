@@ -17,7 +17,7 @@ class User {
         this.updated_at = userData.updated_at;
         this.last_request_at = userData.last_request_at;
 
-
+        //encrypt the password
     }
 
 }

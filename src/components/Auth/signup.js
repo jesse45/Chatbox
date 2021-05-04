@@ -18,23 +18,7 @@ function SignUp() {
 
 
     const handleOnSubmit = (data) => {
-        // console.log(data);
-        // const firebasePromise = new Promise((resolve, reject) => {
-        //     let resolveDispatch = null;
-        //     try {
-        //         resolveDispatch = a;
 
-        //     }
-        //     catch (error) {
-        //         reject(error)
-        //     }
-        //     resolve(resolveDispatch);
-        // })
-
-
-
-        // const connectycubePromise = new Promise((resolve, reject) => {
-        // try {
         AuthService.signUp(data)
         // .then(() => {
         //     history.push("/testing")
@@ -43,20 +27,6 @@ function SignUp() {
         //     console.log(error)
         // })
 
-        // }
-        // catch (error) {
-        //     reject(error)
-        // }
-        // resolve('')
-        // })
-
-        // Promise.all([firebasePromise, connectycubePromise])
-        //     .then(() => {
-        //         history.push("/testing")
-        //     })
-        //     .catch(error => {
-        //         throw (error)
-        //     })
     }
 
 

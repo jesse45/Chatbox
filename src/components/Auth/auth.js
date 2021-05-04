@@ -1,8 +1,8 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router';
 import SignUp from './signup';
 import Login from './login';
-import app from '../../base';
+// import app from '../../base';
 
 // export const AuthContext = createContext();
 

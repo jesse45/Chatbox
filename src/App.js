@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import HomePage from './HomePage/HomePage';
+import LandingPage from './components/landing_page/landingPage';
 import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom'
 import './App.css';
-import Login from './containers/Auth/login';
-import SignUp from './containers/Auth/signup';
-import Auth from './containers/Auth/auth';
+import Auth from './components/Auth/auth';
 import Testing from '../src/Testing';
 // import { AuthProvider } from './containers/Auth/auth';
 import PrivateRoute from './routes/PrivateRoute/PrivateRoute';
@@ -14,6 +12,7 @@ import store from './store/store';
 import { CONFIG, CREDENTIALS } from './appConfig';
 import axios from 'axios';
 import ConnectyCube from 'connectycube/dist/connectycube.min.js';
+import Home from './components/home/home';
 
 function App() {
 
@@ -26,16 +25,16 @@ function App() {
     //check for session token
     let token = sessionStorage.getItem("AppSession");
     //Todo: check if app token has expired
-    console.log(token)
-    if (token) {
+    // console.log(token)
+    // if (token) {
 
-      return <Redirect to="/testing" />
+    //   return <Redirect to="/testing" />
 
-    }
-    else {
-      //
-      await createSessionToken();
-    }
+    // }
+    // else {
+    //   //
+    //   await createSessionToken();
+    // }
 
   }
 
@@ -77,8 +76,9 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <Switch>
-            <Route exact path="/" component={HomePage} />
+            <Route exact path="/" component={LandingPage} />
             <Route path="/auth" component={Auth} />
+            <Route path="/home" component={Home} />
             <PrivateRoute path="/testing" component={Testing} />
 
           </Switch>

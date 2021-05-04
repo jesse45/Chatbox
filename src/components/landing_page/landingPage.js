@@ -1,10 +1,12 @@
 import React from 'react';
 import { NavLink, useHistory } from 'react-router-dom'
-import classes from './HomePage.module.css';
+import classes from './LandingPage.module.css';
 import { useDispatch } from 'react-redux';
-import { signoutUser } from '../store/actions/auth';
+import { signoutUser } from '../../store/actions/auth';
+import authservice from '../../services/auth_service';
+import chatService from '../../services/chat_service';
 
-function HomePage() {
+function LandingPage() {
     const dispatch = useDispatch();
     let history = useHistory();
 
@@ -14,16 +16,22 @@ function HomePage() {
 
     }
 
+    const onDisconnect = () => {
+        authservice.disconnect();
+    }
+
     return (
         <>
             <nav>
                 <div >
-                    <img src={require('../assets/img/logo.png')} alt="Logo" />
+                    <img src={require('../../assets/img/logo.png')} alt="Logo" />
                 </div>
                 <ul className={classes.Nav__links}>
                     <li><NavLink to="/">HomePage</NavLink></li>
                     <li><NavLink to="/auth/login">Login</NavLink></li>
                     <li><NavLink to="/auth/signup">Sign Up</NavLink></li>
+                    <li><NavLink to="/home">Home</NavLink></li>
+
                 </ul>
 
             </nav>
@@ -32,9 +40,12 @@ function HomePage() {
             <main>
                 <h1>Welcome</h1>
                 <button onClick={handleClick}>Sign Out</button>
+                <button onClick={onDisconnect}>Disconnect</button>
+
             </main>
+
         </>
     )
 }
 
-export default HomePage;
+export default LandingPage;

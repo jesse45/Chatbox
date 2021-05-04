@@ -55,27 +55,21 @@ class AuthService {
 
         //check for app token
         //TODO check if token has expired
-        let appToken = sessionStorage.getItem("AppSession")
-        let appTokenJson = JSON.parse(appToken);
-        let token = appTokenJson.token;
-        console.log(token)
+        // let appToken = sessionStorage.getItem("AppSession")
+        // let appTokenJson = JSON.parse(appToken);
+        // let token = appTokenJson.token;
+        // console.log(token)
         let userForm = new User(userCredentials);
+        //encrypt the password
 
 
-        let userParams = {
-            email: "john@mail.com",
-            password: "ksasfk1",
-            phoneNumber: '+11234567890',
-            displayName: "john wick"
-        }
-        console.log(JSON.stringify(userParams))
+        // console.log(JSON.stringify(userParams))
 
         fetch("http://localhost:8080/auth/signup", {
             method: 'POST',
             body: JSON.stringify(userForm),
             headers: {
                 'Content-Type': 'application/json',
-                'CB-Token': token
             }
         })
             .then(response => {
@@ -83,11 +77,12 @@ class AuthService {
                     throw Error(`Error message: ${response.statusText}`)
                 }
                 console.log(response)
-                return response.text()
+                return response.json()
             })
             .then(json => {
                 console.log(json);
-
+                sessionStorage.setItem('session_token', json.session_token)
+                this.signIn({ login: userForm.login, password: userForm.password });
             })
             .catch(error => console.log(error))
 
@@ -95,6 +90,87 @@ class AuthService {
 
     async signIn(userCredentials) {
 
+        //create a utlis file for making api request
+
+        let token = sessionStorage.getItem('session_token');
+
+        const userLogin = {
+            login: userCredentials.login,
+            password: userCredentials.password
+        };
+
+        fetch("http://localhost:8080/auth/login", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userLogin)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw Error(`Error message: ${response.statusText}`)
+                }
+                console.log(response)
+                return response.json()
+            })
+            .then(currentUser => {
+                console.log(currentUser);
+                sessionStorage.setItem('session_token', currentUser.session_token)
+                store.dispatch(setCurrentUser(currentUser));
+                this.connectToChat({ userId: currentUser.session.user_id, password: userLogin.password });
+            })
+            .catch(error => console.log(error))
+
+    }
+
+    // async signIn(userCredentials) {
+    //     let token = sessionStorage.getItem("session_token");
+    //     fetch("http://localhost:8080/auth/login", {
+    //         method: "POST",
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'CB-Token': token
+    //         },
+    //         body: JSON.stringify({ login: userCredentials.login, password: userCredentials.password })
+    //     })
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw Error(`Error message: ${response.statusText}`);
+    //             }
+    //             console.log(response);
+    //             return response.json()
+    //         })
+    //         .then(currentUser => {
+    //             console.log(currentUser);
+    //             sessionStorage.setItem("session_token", currentUser.session.token);
+    //             store.dispatch(setCurrentUser(currentUser))
+    //             this.connectToChat({ userId: currentUser.user.id, password: 123456789 });
+
+    //         })
+    //         .catch(error => console.log(error))
+    // }
+    async isconnected() {
+        const isConnected = ConnectyCube.chat.isConnected;
+        return isConnected;
+    }
+
+    async disconnect() {
+        ConnectyCube.chat.disconnect();
+    }
+
+    async connectToChat(userCredentials) {
+        const user = {
+            userId: userCredentials.userId,
+            password: userCredentials.password
+        }
+
+        await ConnectyCube.chat
+            .connect(user)
+            .then((result) => {
+                console.log(result)
+                console.log(this.isconnected());
+            })
+            .catch((error) => { console.log(error) });
 
 
     }
