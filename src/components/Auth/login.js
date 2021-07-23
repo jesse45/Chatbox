@@ -17,13 +17,24 @@ function Login() {
         dispatch(signinUser);
     }
 
-    const handleOnSubmit = (data) => {
+    const handleOnSubmit = async (data) => {
 
         console.log(data);
 
-        AuthService.signIn({ login: data.login, password: data.password })
+        await AuthService.signIn({ login: data.login, password: data.password })
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(`Error message: ${response.statusText}`)
+                }
+            })
+            .then(() => {
+                history.push('/home')
+            })
+            .catch((error) => {
+                console.log(error);
+            })
         // dispatch(signinUser(data));
-        // history.push('/testing')
+
 
         // if (currentUser) {
         //     return <Redirect to='/testing' />

@@ -1,10 +1,12 @@
 import React from 'react'
 import Console from './appConsoleElements';
 import LeftPanel from '../leftPanel/leftPanel';
-function AppConsole() {
+import RightPanel from '../rightPanel/rightPanel';
+function AppConsole(props) {
     return (
-        <Console>
-            <LeftPanel />
+        <Console className="appContainer" >
+            <LeftPanel {...props} />
+            <RightPanel {...props} />
         </Console>
     )
 }

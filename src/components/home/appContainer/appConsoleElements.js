@@ -7,7 +7,7 @@ const Console = styled.section`
     background-color : #F4F6FA;
     border-radius: 1.2rem;
     box-shadow : 0 6px 20px 0 rgba(0, 0, 0, 0.23);
-    z-index: 2;
+    /* z-index: 1; */
 `;
 
 export default Console;

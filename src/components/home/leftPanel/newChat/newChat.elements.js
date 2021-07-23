@@ -22,7 +22,7 @@ const Button = styled.button`
     align-items: center;
     position: relative;
     align-self: flex-end;
-    left: -27%;
+    left: -15%;
     top: -0.8em;
     /* transform: translateX(-180%) translateY(-20%); */
 

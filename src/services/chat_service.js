@@ -16,10 +16,10 @@ class ChatService {
         //do something
     }
 
-    async createDialog() {
+    async createDialog(type, occupants_id) {
         const params = {
             type: 3,
-            occupants_id: 4114910
+            occupants_id: [4477181]
         };
 
         ConnectyCube.chat.dialog
@@ -31,6 +31,30 @@ class ChatService {
     async disconnect(params) {
         ConnectyCube.chat.disconnect();
     }
+
+    async listDialogs() {
+        const filters = {};
+
+        let chat = await ConnectyCube.chat.dialog.list(filters);
+
+        if (!chat.ok) {
+            throw Error(`Error message: ${chat.statusText}`);
+        }
+
+        let chatResponse = await chat.json();
+        console.log(chatResponse);
+
+    }
+
+    async sendChat() {
+        let dialog;
+        let opponentid;
+        let message = null;
+
+
+
+    }
+
 }
 
 const chatService = new ChatService();

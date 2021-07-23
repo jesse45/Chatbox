@@ -20,7 +20,7 @@ const Form = styled.form`
     background-color : white;
     border-radius : 7px;
     height: 5%;
-    width: 75%;
+    width: 87%;
     align-items: center;
     display: flex;
     transition: all .3s;

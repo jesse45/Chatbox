@@ -1,12 +1,13 @@
 import React from 'react'
 import { SearchBar } from '../../index';
 import { Div } from './leftPanel.elements';
-import { NewChat } from '../../index';
-function LeftPanel() {
+import { NewChat, MessageTab } from '../../index';
+function LeftPanel(props) {
     return (
         <Div>
             <SearchBar />
-            <NewChat />
+            <NewChat {...props} />
+            <MessageTab />
         </Div>
     )
 }
