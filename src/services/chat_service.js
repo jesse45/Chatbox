@@ -37,9 +37,7 @@ class ChatService {
 
         let chat = await ConnectyCube.chat.dialog.list(filters);
 
-        if (!chat.ok) {
-            throw Error(`Error message: ${chat.statusText}`);
-        }
+        console.log(chat);
 
         let chatResponse = await chat.json();
         console.log(chatResponse);

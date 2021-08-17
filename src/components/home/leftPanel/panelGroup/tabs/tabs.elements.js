@@ -17,4 +17,11 @@ const Div = styled.div`
     width: 87%;
 `;
 
-export { List, Div }
+const Dialogs = styled.div`
+    display : flex;
+    margin-left : 6%;
+    width: 87%;
+    height: 65%;
+`;
+
+export { List, Div, Dialogs }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Div, List } from './tabs.elements';
+import { Dialogs, Div, List } from './tabs.elements';
 import Tab from './tab/tab';
 
 function Tabs(props) {
@@ -26,12 +26,12 @@ function Tabs(props) {
                     })}
                 </List>
             </Div>
-            <Div>
+            <Dialogs>
                 {props.children.map((child) => {
                     if (child.props.label !== activeTab) return undefined;
                     return child.props.children;
                 })}
-            </Div>
+            </Dialogs>
         </>
     );
 }

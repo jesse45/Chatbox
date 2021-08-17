@@ -33,7 +33,7 @@ function RightPanel(props) {
 
         <Div>
             <Switch>
-                <Route exact path={`/home`} component={HomeScreen} />
+                <Route exact path={`/home`} component={ChatScreen} />
                 <Route path={`/home/addNewChat`} component={AddNewChat} />
             </Switch>
 

@@ -11,3 +11,5 @@ export { default as AddNewChat } from './home/rightPanel/addNewChat/addNewChat';
 export { default as ChatScreen } from './home/rightPanel/chatscreen/chatScreen';
 
 export { default as MessageTab } from './home/leftPanel/panelGroup/messageTab';
+
+export { default as Recent } from './home/leftPanel/panelGroup/recent/recent';

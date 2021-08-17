@@ -40,51 +40,53 @@ class AuthService {
     }
 
     async signUp(userCredentials) {
-        // await this.CreateSession();
-        // await ConnectyCube.users
-        //     .signup(userProfile)
-        //     .then(async (user) => {
-        //         console.log(user);
-        //         await store.dispatch(signupUser({ email: userProfile.email, password: userProfile.password }));
 
-        //         this.signIn({ email: userProfile.email, password: userProfile.password })
-
-        //     })
-        //     .catch((error) => { console.log(error) });
-
-
-        //check for app token
-        //TODO check if token has expired
-        // let appToken = sessionStorage.getItem("AppSession")
-        // let appTokenJson = JSON.parse(appToken);
-        // let token = appTokenJson.token;
-        // console.log(token)
         let userForm = new User(userCredentials);
         //encrypt the password
 
 
         // console.log(JSON.stringify(userParams))
 
-        return fetch("http://localhost:5000/api/signup", {
-            method: 'POST',
-            body: JSON.stringify(userForm),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw Error(`Error message: ${response.statusText}`)
-                }
-                console.log(response)
-                return response.json()
+        // return fetch("http://localhost:5000/api/signup", {
+        //     method: 'POST',
+        //     body: JSON.stringify(userForm),
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     }
+        // })
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw Error(`Error message: ${response.statusText}`)
+        //         }
+        //         console.log(response)
+        //         return response.json()
+        //     })
+        //     .then(json => {
+        //         console.log(json);
+        //         sessionStorage.setItem('session_token', json.session_token)
+        //         this.signIn({ login: userForm.login, password: userForm.password });
+        //     })
+        //     .catch(error => console.log(error))
+
+        //await this.CreateSession();
+        await ConnectyCube.users
+            .signup(userForm)
+            .then(async (user) => {
+                console.log(user);
+                await store.dispatch(signupUser({ email: userForm.email, password: userForm.password }));
+
+                this.signIn({ email: userForm.email, password: userForm.password })
+
             })
-            .then(json => {
-                console.log(json);
-                sessionStorage.setItem('session_token', json.session_token)
-                this.signIn({ login: userForm.login, password: userForm.password });
-            })
-            .catch(error => console.log(error))
+            .catch((error) => { console.log(error) });
+
+
+        // check for app token
+        // TODO check if token has expired
+        let appToken = sessionStorage.getItem("AppSession")
+        let appTokenJson = JSON.parse(appToken);
+        let token = appTokenJson.token;
+        console.log(token)
 
     }
 
@@ -99,27 +101,37 @@ class AuthService {
             password: userCredentials.password
         };
 
-        return fetch("http://localhost:5000/api/login", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userLogin)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw Error(`Error message: ${response.statusText}`)
-                }
-                console.log(response)
-                return response.json()
+
+        await ConnectyCube.createSession(userLogin)
+            .then(async (session) => {
+                console.log(session);
+                sessionStorage.setItem('session_token', session.token)
+                await store.dispatch(setCurrentUser(session));
+                this.connectToChat({ userId: session.user_id, password: userLogin.password });
             })
-            .then(currentUser => {
-                console.log(currentUser);
-                sessionStorage.setItem('session_token', currentUser.session_token)
-                store.dispatch(setCurrentUser(currentUser));
-                this.connectToChat({ userId: currentUser.session.user_id, password: userLogin.password });
-            })
-            .catch(error => console.log(error))
+
+
+        // return fetch("http://localhost:5000/api/login", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(userLogin)
+        // })
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw Error(`Error message: ${response.statusText}`)
+        //         }
+        //         console.log(response)
+        //         return response.json()
+        //     })
+        //     .then(currentUser => {
+        //         console.log(currentUser);
+        //         sessionStorage.setItem('session_token', currentUser.session_token)
+        //         store.dispatch(setCurrentUser(currentUser));
+        //         this.connectToChat({ userId: currentUser.session.user_id, password: userLogin.password });
+        //     })
+        //     .catch(error => console.log(error))
 
     }
 

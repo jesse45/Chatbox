@@ -22,17 +22,17 @@ function Login() {
         console.log(data);
 
         await AuthService.signIn({ login: data.login, password: data.password })
-            .then((response) => {
-                if (!response.ok) {
-                    throw Error(`Error message: ${response.statusText}`)
-                }
-            })
             .then(() => {
                 history.push('/home')
             })
             .catch((error) => {
                 console.log(error);
             })
+        // .then((response) => {
+        //     if (!response.ok) {
+        //         throw Error(`Error message: ${response.statusText}`)
+        //     }
+        // })
         // dispatch(signinUser(data));
 
 

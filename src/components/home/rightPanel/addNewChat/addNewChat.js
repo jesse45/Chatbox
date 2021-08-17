@@ -1,9 +1,30 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { object } from 'yup';
 import UserService from '../../../../services/user_service';
+import { setUser } from '../../../../store/actions/contacts';
+
+const modifyUser = (elem) => {
+    let createdAt = "created_at";
+    let updatedAt = "updated_at";
+    let lastRequestedAt = "last_request_at";
+    console.log(elem);
+
+    if (elem[0] === createdAt || elem[0] === updatedAt || elem[0] === lastRequestedAt) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
 
 function AddNewChat(props) {
     const [groupValue, setGroupValue] = useState('')
     const [contact, setContact] = useState('')
+    const [isLoading, setIsLoading] = useState([]);
+    let users = [];
+
+    const dispatch = useDispatch();
 
     const handleInputChange = (event) => {
         // event.preventDefault();
@@ -22,12 +43,45 @@ function AddNewChat(props) {
 
     const handleOnSubmit = (event) => {
         event.preventDefault();
-        console.log(console);
-        console.log(contact);
-        console.log(groupValue);
-        console.log(event);
-        UserService.getListOfUsers("j")
+        // console.log(console);
+        // console.log(contact);
+        // console.log(groupValue);
+        // console.log(event);
+
+
+        let str = contact.trim();
+        if (str.length > 2) {
+
+            UserService.getListOfUsers(str)
+                .then(results => {
+                    console.log(results);
+                    users = results.items;
+                    //console.log(users);
+                    setIsLoading(results.items);
+                })
+                .catch(error => {
+                    console.log(error);
+
+                })
+        }
+
     }
+
+    const addContact = (elem) => {
+        console.log(elem);
+
+        //const newElem = {...elem};
+
+        const newElem = Object.fromEntries(
+            Object.entries(elem.user)
+                .filter(modifyUser)
+        );
+        console.log(newElem);
+
+        dispatch(setUser(newElem))
+
+    }
+
 
     return (
         <div>
@@ -55,6 +109,9 @@ function AddNewChat(props) {
 
                 <button >submit</button>
             </form>
+            {isLoading.map(elem => {
+                return <button onClick={() => { addContact(elem) }}>{elem.user.full_name}</button>
+            })}
         </div>
     )
 }
